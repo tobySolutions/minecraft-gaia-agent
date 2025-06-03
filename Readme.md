@@ -178,28 +178,19 @@ The bot has these tools available to the LLM:
 
 To use a different model, edit `src/llm/index.ts`:
 
-### For OpenAI:
+### Gaia:
 
 ```typescript
 import { ChatOpenAI } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "gpt-4",
-  apiKey: process.env.OPENAI_API_KEY,
-  temperature: 0.3,
-});
-```
-
-### For Anthropic:
-
-```typescript
-import { ChatAnthropic } from "@langchain/anthropic";
-
-const model = new ChatAnthropic({
-  model: "claude-3-sonnet-20240229",
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  temperature: 0.3,
-});
+    model: "Meta-Llama-3.1-8B-Instruct-Q5_K_M",
+    configuration: {
+      apiKey: `${process.env.GAIA_API_KEY}`,
+      baseURL: "gaia-node-url/v1",
+    },
+    temperature: 0.3,
+  });
 ```
 
 **Important:** Make sure your model supports tool/function calling for the agent to work properly!
