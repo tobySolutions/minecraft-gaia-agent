@@ -9,7 +9,7 @@ A Minecraft bot powered by an LLM with tool-calling capabilities (via [LangChain
 - ✅ **Tool-calling agent architecture** - LLM directly calls functions instead of text parsing
 - ✅ **Natural language understanding** - Ask in plain English, bot executes actions
 - ✅ **Minecraft chat interaction** - Full in-game communication
-- ✅ **Smart movement** - Follow players, pathfinding, stop/start commands  
+- ✅ **Smart movement** - Follow players, pathfinding, stop/start commands
 - ✅ **Mining automation** - Find and collect specific block types
 - ✅ **Building capabilities** - Place blocks from inventory strategically
 - ✅ **Inventory management** - Check contents and use items intelligently
@@ -22,12 +22,24 @@ A Minecraft bot powered by an LLM with tool-calling capabilities (via [LangChain
 
 ## 🧩 Stack
 
-- **Mineflayer** – Minecraft bot engine  
+- **Mineflayer** – Minecraft bot engine
 - **LangChain Agents** – Tool-calling LLM orchestration with AgentExecutor
 - **Gaia LLM** – Tool-capable language model (swappable)
-- **mineflayer-pathfinder** – Advanced movement and navigation AI  
-- **mineflayer-collectblock** – Automated mining and block collection  
-- **TypeScript** – Strong typing and clean architecture  
+- **mineflayer-pathfinder** – Advanced movement and navigation AI
+- **mineflayer-collectblock** – Automated mining and block collection
+- **TypeScript** – Strong typing and clean architecture
+
+---
+
+## Prerequisites
+
+1. **Minecraft Server**: You need a running Minecraft server
+
+   - Download from [minecraft.net](https://minecraft.net/download/server)
+   - Or use Paper/Spigot for better performance
+   - Make sure it's running on `localhost:25565` (or update `src/bot.ts`)
+
+2. **Gaia API Key**: Get one from [gaia.domains](https://gaia.domains)
 
 ---
 
@@ -98,22 +110,23 @@ Use the in-game chat (press `T`) to communicate with the bot.
 
 The bot now uses **intelligent tool calling** instead of text parsing. When you speak naturally, the LLM decides which tools to use:
 
-| Example Prompt                | Tools Used                    | Behavior                      |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| `What can you do?`           | `respond_to_question`         | Lists capabilities            |
-| `Mine some iron ore`         | `mine_block("iron")`          | Finds and mines iron ore      |
-| `Follow me around`           | `follow_player("username")`   | Starts following you          |
-| `Stop following me`          | `stop_movement()`             | Stops all movement            |
-| `Come to me`                 | `go_to_player("username")`    | Walks to your location        |
-| `What's in your inventory?`  | `check_inventory()`           | Lists all items               |
-| `Place some stone blocks`    | `place_block("stone")`        | Places stone from inventory   |
-| `Look around and tell me what you see` | `look_around()`    | Describes nearby environment  |
+| Example Prompt                         | Tools Used                  | Behavior                     |
+| -------------------------------------- | --------------------------- | ---------------------------- |
+| `What can you do?`                     | `respond_to_question`       | Lists capabilities           |
+| `Mine some iron ore`                   | `mine_block("iron")`        | Finds and mines iron ore     |
+| `Follow me around`                     | `follow_player("username")` | Starts following you         |
+| `Stop following me`                    | `stop_movement()`           | Stops all movement           |
+| `Come to me`                           | `go_to_player("username")`  | Walks to your location       |
+| `What's in your inventory?`            | `check_inventory()`         | Lists all items              |
+| `Place some stone blocks`              | `place_block("stone")`      | Places stone from inventory  |
+| `Look around and tell me what you see` | `look_around()`             | Describes nearby environment |
 
 ---
 
 ## 🛠 Architecture: Tool-Calling vs Text Parsing
 
 ### Old Approach (Text Parsing)
+
 ```javascript
 // ❌ Fragile and error-prone
 if (answer.includes("mine")) {
@@ -123,6 +136,7 @@ if (answer.includes("mine")) {
 ```
 
 ### New Approach (Tool-Calling)
+
 ```javascript
 // ✅ Structured and reliable
 tools: [
@@ -131,12 +145,13 @@ tools: [
     description: "Mine a specific type of block",
     func: async (blockType: string) => {
       // Direct function call with proper parameters
-    }
-  })
-]
+    },
+  }),
+];
 ```
 
 **Benefits:**
+
 - **More reliable** - No more guessing what the LLM meant
 - **Better error handling** - Each tool handles its own edge cases
 - **Chainable actions** - LLM can use multiple tools in sequence
@@ -164,6 +179,7 @@ The bot has these tools available to the LLM:
 To use a different model, edit `src/llm/index.ts`:
 
 ### For OpenAI:
+
 ```typescript
 import { ChatOpenAI } from "@langchain/openai";
 
@@ -175,6 +191,7 @@ const model = new ChatOpenAI({
 ```
 
 ### For Anthropic:
+
 ```typescript
 import { ChatAnthropic } from "@langchain/anthropic";
 
@@ -208,15 +225,18 @@ minecraft-gaia-bot/
 ## 🐛 Troubleshooting
 
 ### "Agent stopped due to max iterations"
+
 - The LLM couldn't decide which tool to use
 - Bot will fall back to a helpful default response
 - Try being more specific in your requests
 
 ### TypeScript compilation errors
+
 - Make sure all dependencies are installed: `pnpm install`
 - Check that your TypeScript version supports the syntax used
 
 ### Bot can't connect to Minecraft
+
 - Ensure your Minecraft server is running on `localhost:25565`
 - Update connection details in `src/bot.ts` if needed
 - Check that the bot username isn't already taken
@@ -225,13 +245,13 @@ minecraft-gaia-bot/
 
 ## 🛠 Future Improvements
 
-* ✅ **Tool-calling agents** for reasoning-based execution
-* 🔜 **Multi-step planning** - "Build a house" breaks down into smaller tasks
-* 🔜 **Memory system** - Remember past conversations and actions
-* 🔜 **Advanced building** - Structure templates and blueprints
-* 🔜 **Combat capabilities** - Defend against mobs
-* 🔜 **Resource management** - Smart inventory optimization
-* 🔜 **Collaborative tasks** - Work with multiple players
+- ✅ **Tool-calling agents** for reasoning-based execution
+- 🔜 **Multi-step planning** - "Build a house" breaks down into smaller tasks
+- 🔜 **Memory system** - Remember past conversations and actions
+- 🔜 **Advanced building** - Structure templates and blueprints
+- 🔜 **Combat capabilities** - Defend against mobs
+- 🔜 **Resource management** - Smart inventory optimization
+- 🔜 **Collaborative tasks** - Work with multiple players
 
 ---
 
@@ -239,11 +259,11 @@ minecraft-gaia-bot/
 
 Built with:
 
-* [mineflayer](https://github.com/PrismarineJS/mineflayer) - Minecraft bot framework
-* [LangChain.js](https://js.langchain.com/) - LLM agent orchestration
-* [mineflayer-pathfinder](https://github.com/PrismarineJS/mineflayer-pathfinder) - Movement AI
-* [mineflayer-collectblock](https://github.com/PrismarineJS/mineflayer-collectblock) - Mining automation
-* [Gaia](https://gaia.domains/) - LLM API provider
+- [mineflayer](https://github.com/PrismarineJS/mineflayer) - Minecraft bot framework
+- [LangChain.js](https://js.langchain.com/) - LLM agent orchestration
+- [mineflayer-pathfinder](https://github.com/PrismarineJS/mineflayer-pathfinder) - Movement AI
+- [mineflayer-collectblock](https://github.com/PrismarineJS/mineflayer-collectblock) - Mining automation
+- [Gaia](https://gaia.domains/) - LLM API provider
 
 ---
 
